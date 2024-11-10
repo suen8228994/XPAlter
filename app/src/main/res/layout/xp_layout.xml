@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etModel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="设备型号 (Model)" />
+
+    <EditText
+        android:id="@+id/etBrand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="品牌 (Brand)" />
+
+    <EditText
+        android:id="@+id/etManufacturer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="制造商 (Manufacturer)" />
+
+    <EditText
+        android:id="@+id/etDevice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="设备名 (Device)" />
+
+    <EditText
+        android:id="@+id/etSerial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="序列号 (Serial)" />
+
+    <EditText
+        android:id="@+id/etIMEI"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="IMEI" />
+
+    <EditText
+        android:id="@+id/etTargetAppPackage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="目标应用包名" />
+
+    <Switch
+        android:id="@+id/swHideUsbDebugging"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="隐藏 USB 调试" />
+
+    <Switch
+        android:id="@+id/swHideAccessibility"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="隐藏无障碍权限" />
+
+    <Switch
+        android:id="@+id/swHideApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="隐藏应用列表信息" />
+
+    <Button
+        android:id="@+id/btnApply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="应用设置" />
+
+</LinearLayout>
