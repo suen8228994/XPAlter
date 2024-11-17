@@ -1,4 +1,4 @@
-package com.posed.xpalter.hider;
+package com.posed.xpalter;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -9,6 +9,7 @@ import android.os.Environment;
 
 import androidx.annotation.Keep;
 
+import com.posed.xpalter.hider.C;
 import com.posed.xpalter.hider.util.ConfigUtils;
 
 import java.io.File;

@@ -15,8 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ListView;
-import android.widget.SearchView;
 
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 
 import com.posed.xpalter.R;
 import com.posed.xpalter.hider.adapter.AppsAdapter;
@@ -30,7 +33,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class HiderRootActivity extends Activity {
+public class HiderRootActivity extends AppCompatActivity {
 
     private ListView mAppsView;
 
@@ -80,7 +83,7 @@ public class HiderRootActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        SearchView sv = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        SearchView sv = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.menu_search));
         sv.setInputType(EditorInfo.TYPE_CLASS_TEXT);
         sv.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

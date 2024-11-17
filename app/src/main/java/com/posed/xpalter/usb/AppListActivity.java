@@ -41,11 +41,8 @@ public class AppListActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		sharedPreferences = new WorldReadablePrefs(AppListActivity.this, "tickedApps");
-
 		setContentView(R.layout.activity_main);
-
 		recyclerView = findViewById(R.id.recyclerView);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

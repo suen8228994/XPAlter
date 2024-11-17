@@ -38,7 +38,33 @@ public class XposedMain implements IXposedHookLoadPackage {
 
 	@Override
 	public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
-
+		if (loadPackageParam.packageName.equals(BuildConfig.APPLICATION_ID)) {
+			Log.d("XposedMain", "hiderRoot: 0");
+			XposedHelpers.findAndHookMethod(
+					"com.posed.xpalter.hider.ui.HiderRootActivity", loadPackageParam.classLoader,
+					"isEnabled", XC_MethodReplacement.returnConstant(true)
+			);
+		}
+//		Log.d("XposedMain", "hiderRoot: 1");
+		XposedBridge.log("XposedMain   hiderRoot");
+		XposedHelpers.findAndHookMethod(Application.class, "attach", Context.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				super.afterHookedMethod(param);
+				Context context = (Context) param.args[0];
+				if (context != null) {
+					loadPackageParam.classLoader = context.getClassLoader();
+					try {
+						invokeHandleHookMethod(
+								context, BuildConfig.APPLICATION_ID,
+								BuildConfig.APPLICATION_ID + ".XposedHook",
+								"handleLoadPackage", loadPackageParam);
+					} catch (Throwable error) {
+						error.printStackTrace();
+					}
+				}
+			}
+		});
 		XposedBridge.log("hideUSBDebugging: hook " + loadPackageParam.packageName);
 		// 隐藏开发者模式
 		XposedHelpers.findAndHookMethod("android.provider.Settings$Global", loadPackageParam.classLoader,
@@ -210,34 +236,10 @@ public class XposedMain implements IXposedHookLoadPackage {
 				}
 			}
 		});
-
 	}
 
 	private void hiderRoot(XC_LoadPackage.LoadPackageParam loadPackageParam){
-		if (loadPackageParam.packageName.equals(BuildConfig.APPLICATION_ID)) {
-			XposedHelpers.findAndHookMethod(
-					"com.yaerin.xposed.hider.ui.MainActivity", loadPackageParam.classLoader,
-					"isEnabled", XC_MethodReplacement.returnConstant(true)
-			);
-		}
-		XposedHelpers.findAndHookMethod(Application.class, "attach", Context.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				super.afterHookedMethod(param);
-				Context context = (Context) param.args[0];
-				if (context != null) {
-					loadPackageParam.classLoader = context.getClassLoader();
-					try {
-						invokeHandleHookMethod(
-								context, BuildConfig.APPLICATION_ID,
-								BuildConfig.APPLICATION_ID + "r.XposedHook",
-								"handleLoadPackage", loadPackageParam);
-					} catch (Throwable error) {
-						error.printStackTrace();
-					}
-				}
-			}
-		});
+
 	}
 
 	private void invokeHandleHookMethod(

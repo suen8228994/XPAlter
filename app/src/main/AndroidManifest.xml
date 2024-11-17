@@ -7,12 +7,10 @@
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:name="com.posed.xpalter.hider.App"
-        android:supportsRtl="true"
         android:theme="@style/Theme.XPAlter">
         <!-- 是否为Xposed模块 -->
         <meta-data
@@ -44,12 +42,22 @@
         <activity android:name=".usb.AppListActivity"
             android:exported="true"
             />
-        <activity android:name="com.posed.xpalter.hider.ui.HiderRootActivity">
+        <activity android:name="com.posed.xpalter.hider.ui.HiderRootActivity"
+            android:exported="true"
+            >
 
         </activity>
         <activity android:name="com.posed.xpalter.hider.ui.SettingsActivity" />
 
+        <receiver android:name=".receiver.PackageReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_CHANGED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
 
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
