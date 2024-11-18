@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.posed.xpalter.hider.ui.HiderRootActivity;
 
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity {
 
     private Switch swHideUsbDebugging, swHideAccessibility, swHideApp;
@@ -22,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         swHideUsbDebugging = findViewById(R.id.swHideUsbDebugging);
         swHideAccessibility = findViewById(R.id.swHideAccessibility);
         swHideApp = findViewById(R.id.swHideApp);
-
+        checkForSuBinary();
         swHideUsbDebugging.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -52,6 +54,25 @@ public class MainActivity extends AppCompatActivity {
     private void applySettings() {
 
     }
-
+    // 检查是否存在 su 文件
+    private static boolean checkForSuBinary() {
+        String[] paths = {
+                "/system/app/Superuser.apk",
+                "/sbin/su",
+                "/system/bin/su",
+                "/system/xbin/su",
+                "/data/local/xbin/su",
+                "/data/local/bin/su",
+                "/system/sd/xbin/su",
+                "/system/bin/failsafe/su",
+                "/data/local/su"
+        };
+        for (String path : paths) {
+            if (new File(path).exists()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
