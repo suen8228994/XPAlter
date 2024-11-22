@@ -164,65 +164,6 @@ public class XposedMain implements IXposedHookLoadPackage , IXposedHookZygoteIni
 	}
 	private void hookExecMethod(XC_LoadPackage.LoadPackageParam loadPackageParam){
 		try {
-//			XposedHelpers.findAndHookMethod("java.lang.Runtime", null, "exec", String.class, new XC_MethodHook() {
-//				@Override
-//				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//					String cmd = (String) param.args[0];
-//					if (cmd != null && cmd.contains("su")) {
-//						// 禁止执行 su 命令，返回空结果
-//						param.setResult(null);
-//					}
-//				}
-//			});
-//			XposedHelpers.findAndHookMethod("java.lang.ProcessBuilder", null, "start", new XC_MethodHook() {
-//				@Override
-//				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//					try {
-//						java.util.List<String> commands = (java.util.List<String>) param.args[0];
-//						for (String command : commands) {
-//							if (command.contains("su")) {
-//								param.setResult(null); // 阻止命令执行
-//							}
-//						}
-//					} catch (Exception e) {
-//						Log.d("XposedMain", "beforeHookedMethod: " + e.getMessage());
-//					}
-//				}
-//			});
-//			XposedHelpers.findAndHookMethod("android.os.SELinux", null, "isSELinuxEnabled", new XC_MethodHook() {
-//				@Override
-//				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//					// 修改 SELinux 状态，返回 false 或正常值
-//					param.setResult(true); // 假装 SELinux 没有被禁用
-//				}
-//			});
-			// 示例：检查 SuperSU 的存在性
-//			XposedHelpers.findAndHookMethod("com.supersu.app.SuperSU", null, "isRooted", new XC_MethodHook() {
-//				@Override
-//				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//					// 直接返回 false，假装没有 root
-//					param.setResult(false);
-//				}
-//			});
-//
-//			// 示例：检查 Magisk 的存在性
-//			XposedHelpers.findAndHookMethod("com.magisk.manager.Magisk", null, "isRooted", new XC_MethodHook() {
-//				@Override
-//				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//					// 直接返回 false，假装没有 root
-//					param.setResult(false);
-//				}
-//			});
-
-			// 示例：检查 Magisk 的存在性
-//			XposedHelpers.findAndHookMethod("com.stericson.RootShell", null, "isRootAvailable", new XC_MethodHook() {
-//				@Override
-//				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//					// 直接返回 false，假装没有 root
-//					Log.d("XposedMain", "beforeHookedMethod: com.stericson.RootShell");
-//					param.setResult(false);
-//				}
-//			});
 			// Hook System.getenv(String name)
 			XposedHelpers.findAndHookMethod(
 					System.class, // 类
@@ -233,7 +174,6 @@ public class XposedMain implements IXposedHookLoadPackage , IXposedHookZygoteIni
 						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 							String key = (String) param.args[0];
 							XposedBridge.log("System.getenv called with key: " + key);
-
 							// 如果 key 是 "PATH"，则返回空字符串
 							if ("PATH".equals(key)) {
 								param.setResult("");
@@ -242,102 +182,8 @@ public class XposedMain implements IXposedHookLoadPackage , IXposedHookZygoteIni
 						}
 					}
 			);
-//			// 1. Hook File.exists() - 绕过文件路径检测
-//			XposedHelpers.findAndHookMethod(
-//					File.class,
-//					"exists",
-//					new XC_MethodHook() {
-//						@Override
-//						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//							String path = ((File) param.thisObject).getAbsolutePath();
-//
-//							// 如果路径是常见的 Root 工具路径，伪造返回 false
-//							if (path.contains("su") || path.contains("magisk") || path.contains("Superuser.apk")) {
-//								param.setResult(false);
-//								XposedBridge.log("XposedMain beforeHookedMethod Root file check bypassed for: " + path);
-//							}
-//						}
-//					}
-//			);
 
-//			// 2. Hook Runtime.getRuntime().exec() - 绕过命令执行检测
-//			XposedHelpers.findAndHookMethod(
-//					Runtime.class,
-//					"exec",
-//					String[].class, // 参数类型：命令数组
-//					new XC_MethodHook() {
-//						@Override
-//						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//							String[] commands = (String[]) param.args[0];
-//
-//							// 如果命令是常见的 Root 命令，伪造返回空结果
-//							for (String command : commands) {
-//								if (command.contains("su") || command.contains("id")) {
-//									param.setThrowable(new IOException("Command not found"));
-//									XposedBridge.log("XposedMain beforeHookedMethod Root command execution bypassed for: " + command);
-//									return;
-//								}
-//							}
-//						}
-//					}
-//			);
-//
-//			// 3. Hook System.getProperty() - 绕过系统属性检测
-//			XposedHelpers.findAndHookMethod(
-//					System.class,
-//					"getProperty",
-//					String.class, // 参数类型：属性名
-//					new XC_MethodHook() {
-//						@Override
-//						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//							String property = (String) param.args[0];
-//
-//							// 如果属性与 Root 工具相关，返回空或默认值
-//							if ("ro.debuggable".equals(property) || "ro.secure".equals(property)) {
-//								param.setResult("0");
-//								XposedBridge.log("XposedMain beforeHookedMethod Root property check bypassed for: " + property);
-//							}
-//						}
-//					}
-//			);
 
-			// 4. Hook PackageManager.getInstalledPackages() - 绕过包名检测
-//			XposedHelpers.findAndHookMethod(
-//					PackageManager.class,
-//					"getInstalledPackages",
-//					int.class, // 参数类型：标志
-//					new XC_MethodHook() {
-//						@Override
-//						protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-//							List<?> packages = (List<?>) param.getResult();
-//
-//							// 过滤掉与 Root 工具相关的包名
-//							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//								packages.removeIf(pkg -> pkg.toString().contains("com.topjohnwu.magisk")
-//										|| pkg.toString().contains("eu.chainfire.supersu"));
-//							}
-//							XposedBridge.log("XposedMain beforeHookedMethod Root package detection bypassed");
-//						}
-//					}
-//			);
-//
-//			// 5. Hook File.canWrite() - 绕过文件权限检测
-//			XposedHelpers.findAndHookMethod(
-//					File.class,
-//					"canWrite",
-//					new XC_MethodHook() {
-//						@Override
-//						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//							String path = ((File) param.thisObject).getAbsolutePath();
-//
-//							// 如果检测 `/system` 或 `/data` 的写权限，伪造返回 false
-//							if (path.equals("/system") || path.equals("/data")) {
-//								param.setResult(false);
-//								XposedBridge.log("XposedMain beforeHookedMethod Root write permission check bypassed for: " + path);
-//							}
-//						}
-//					}
-//			);
 		}catch (Exception e){
 			Log.d("XposedMain", "hookExecMethod: "+e.getMessage());
 		}
