@@ -12,6 +12,9 @@
         android:label="@string/app_name"
         android:name="com.posed.xpalter.hider.App"
         android:theme="@style/Theme.XPAlter">
+        <meta-data
+            android:name="de.robv.android.xposed.installer"
+            android:value="com.posed.xpalter" />
         <!-- 是否为Xposed模块 -->
         <meta-data
             android:name="xposedmodule"
